@@ -114,20 +114,25 @@ class SignUpScreen extends StatelessWidget {
                         context.read<UserManager>().signUp(
                             userApp: userApp,
                             onSucess: () {
-                              //Navigator.of(context).pop();
+                              Navigator.of(context).pop();
                             },
                             onFail: (e) {
                               // ignore: deprecated_member_use
                               scaffoldKey.currentState?.showSnackBar(
                                 SnackBar(
                                   content: Text('Falha ao Cadasrtrar: $e'),
-                                  backgroundColor: Colors.red,
+                                  backgroundColor:
+                                      Color.fromARGB(255, 95, 87, 86),
                                 ),
                               );
                             });
                       }
                     },
-                    child: const Text('Criar Conta'),
+                    child: context.read<UserManager>().loading
+                        ? const CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(Colors.amber),
+                          )
+                        : const Text('Criar Conta'),
                   ),
                 ),
               ],
