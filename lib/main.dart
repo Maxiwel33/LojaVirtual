@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lojavirtual/models/user_manager.dart';
 import 'package:lojavirtual/screens/base/base_screen.dart';
+import 'package:lojavirtual/screens/login/login_screen.dart';
 import 'package:lojavirtual/screens/signup/signup_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -21,30 +22,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => UserManager(),
+      lazy: false,
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Loja de D,Meninas',
-          theme: ThemeData(
-            primaryColor: const Color.fromARGB(255, 9, 27, 39),
-            scaffoldBackgroundColor: const Color.fromARGB(255, 9, 27, 39),
-            appBarTheme: const AppBarTheme(
-              elevation: 0,
-            ),
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
-          initialRoute: '/base',
-          // ignore: missing_return
-          onGenerateRoute: (settings) {
-            switch (settings.name) {
-              case '/signup':
-                return MaterialPageRoute(
-                  builder: (_) => SignUpScreen(),
-                );
-              case '/base':
-                return MaterialPageRoute(builder: (_) => BaseScreen());
-            }
-          } //home: BaseScreen()
-          ),
+        title: 'Loja do Daniel',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: const Color.fromARGB(255, 4, 125, 141),
+          scaffoldBackgroundColor: const Color.fromARGB(255, 4, 125, 141),
+          appBarTheme: const AppBarTheme(elevation: 0),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        initialRoute: '/base',
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/login':
+              return MaterialPageRoute(builder: (_) => const LoginScreen());
+            case '/signup':
+              return MaterialPageRoute(builder: (_) => SignUpScreen());
+            case '/base':
+            default:
+              return MaterialPageRoute(builder: (_) => BaseScreen());
+          }
+        },
+      ),
     );
   }
 }

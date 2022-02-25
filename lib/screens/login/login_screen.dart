@@ -7,6 +7,8 @@ import 'package:lojavirtual/models/user_manager.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key key}) : super(key: key);
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -117,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     );
                                   },
                                   onSuccess: () {
-                                    //TODO: FECHAR TELA DE LOGIN
+                                    Navigator.of(context).pop();
                                   });
                             }
                           },

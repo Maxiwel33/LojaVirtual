@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:lojavirtual/helpers/firebase.errors.dart';
 import 'package:lojavirtual/models/user_app.dart';
@@ -10,10 +12,16 @@ class UserManager extends ChangeNotifier {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  User user;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  //User user = FirebaseAuth.instance.currentUser;
+
+  UserApp userApp;
 
   bool _loading = false;
   bool get loading => _loading;
+
+  bool get isLoggedIn => UserApp != null;
 
   Future<void> signIn(
       {UserApp userApp, Function onFail, Function onSuccess}) async {
@@ -26,7 +34,7 @@ class UserManager extends ChangeNotifier {
         password: userApp.password,
       );
 
-      user = result.user;
+      await _loadCurrentUser(firebaseAuth: FirebaseAuth.instance);
 
       onSuccess();
     } on FirebaseAuthException catch (e) {
@@ -42,7 +50,11 @@ class UserManager extends ChangeNotifier {
       final UserCredential result = await auth.createUserWithEmailAndPassword(
           email: userApp.email, password: userApp.password);
 
-      this.user = result.user;
+      userApp.id = result.user.uid;
+
+      this.userApp = UserApp();
+
+      await userApp.saveData();
 
       onSucess();
     } on FirebaseAuthException catch (e) {
@@ -51,17 +63,24 @@ class UserManager extends ChangeNotifier {
     loading = false;
   }
 
+  void signOut() {
+    auth.signOut();
+    userApp = null;
+    notifyListeners();
+  }
+
   set loading(bool value) {
     _loading = value;
     notifyListeners();
   }
 
-  Future<void> _loadCurrentUser() async {
-    final User currentUser = auth.currentUser;
+  Future<void> _loadCurrentUser({FirebaseAuth firebaseAuth}) async {
+    final FirebaseAuth currentUser = firebaseAuth ?? auth.currentUser.uid;
     if (currentUser != null) {
-      user = currentUser;
-      print(user.uid);
+      final DocumentSnapshot docUser =
+          await firestore.collection('users').doc(currentUser.toString()).get();
+      userApp = UserApp.fromDocument(docUser);
+      notifyListeners();
     }
-    notifyListeners();
   }
 }

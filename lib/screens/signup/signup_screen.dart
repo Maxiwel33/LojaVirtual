@@ -10,7 +10,7 @@ class SignUpScreen extends StatelessWidget {
 
   SignUpScreen({Key key}) : super(key: key);
 
-  final UserApp user = UserApp();
+  final UserApp userApp = UserApp();
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +35,12 @@ class SignUpScreen extends StatelessWidget {
                     if (name.isEmpty)
                       // ignore: curly_braces_in_flow_control_structures
                       return 'Campo obrigatório';
-                    else if (name.trim().split(' ').length <= 1)
+                    else if (name.trim().split(' ').length <= 1) {
                       return 'Preencha seu nome completo';
+                    }
                     return null;
                   },
-                  onSaved: (name) => user.name = name,
+                  onSaved: (name) => userApp.name = name,
                 ),
                 const SizedBox(
                   height: 16,
@@ -48,12 +49,14 @@ class SignUpScreen extends StatelessWidget {
                   decoration: const InputDecoration(hintText: 'E-Mail'),
                   keyboardType: TextInputType.emailAddress,
                   validator: (email) {
-                    if (email.isEmpty)
+                    if (email.isEmpty) {
                       return 'Campo obrigatorio';
-                    else if (!emailValid(email)) return 'E-mail inválido';
+                    } else if (!emailValid(email)) {
+                      return 'E-mail inválido';
+                    }
                     return null;
                   },
-                  onSaved: (email) => user.email = email,
+                  onSaved: (email) => userApp.email = email,
                 ),
                 const SizedBox(
                   height: 16,
@@ -69,7 +72,7 @@ class SignUpScreen extends StatelessWidget {
                     else if (pass.length < 6) return 'Senha muito curta';
                     return null;
                   },
-                  onSaved: (pass) => user.password = pass,
+                  onSaved: (pass) => userApp.password = pass,
                 ),
                 const SizedBox(
                   height: 16,
@@ -78,12 +81,14 @@ class SignUpScreen extends StatelessWidget {
                   decoration: const InputDecoration(hintText: 'Repita a Senha'),
                   obscureText: true,
                   validator: (pass) {
-                    if (pass.isEmpty)
+                    if (pass.isEmpty) {
                       return 'Campo Obrigatorio';
-                    else if (pass.length < 6) return 'Senha muito curta';
+                    } else if (pass.length < 6) {
+                      return 'Senha muito curta';
+                    }
                     return null;
                   },
-                  onSaved: (pass) => user.confirmPassword = pass,
+                  onSaved: (pass) => userApp.confirmPassword = pass,
                 ),
                 const SizedBox(
                   height: 16,
@@ -95,7 +100,7 @@ class SignUpScreen extends StatelessWidget {
                       if (formKey.currentState.validate()) {
                         formKey.currentState.save();
 
-                        if (user.password != user.confirmPassword) {
+                        if (userApp.password != userApp.confirmPassword) {
                           // ignore: deprecated_member_use
                           scaffoldKey.currentState.showSnackBar(
                             const SnackBar(
@@ -107,11 +112,9 @@ class SignUpScreen extends StatelessWidget {
                           return;
                         }
                         context.read<UserManager>().signUp(
-                            userApp: user,
+                            userApp: userApp,
                             onSucess: () {
-                              debugPrint('Sucesso');
-
-                              //TODO: POP
+                              //Navigator.of(context).pop();
                             },
                             onFail: (e) {
                               // ignore: deprecated_member_use
