@@ -17,14 +17,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => UserManager(),
       lazy: false,
       child: MaterialApp(
-        title: 'Loja do Daniel',
+        title: 'Loja do Di,Meninas',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: const Color.fromARGB(255, 4, 125, 141),
@@ -32,16 +31,22 @@ class MyApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(elevation: 0),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: '/base',
+        initialRoute: '/login',
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case '/login':
-              return MaterialPageRoute(builder: (_) => const LoginScreen());
+              return MaterialPageRoute(
+                builder: (_) => const LoginScreen(),
+              );
             case '/signup':
-              return MaterialPageRoute(builder: (_) => SignUpScreen());
+              return MaterialPageRoute(
+                builder: (_) => SignUpScreen(),
+              );
             case '/base':
             default:
-              return MaterialPageRoute(builder: (_) => BaseScreen());
+              return MaterialPageRoute(
+                builder: (_) => BaseScreen(),
+              );
           }
         },
       ),

@@ -122,7 +122,7 @@ class SignUpScreen extends StatelessWidget {
                                 SnackBar(
                                   content: Text('Falha ao Cadasrtrar: $e'),
                                   backgroundColor:
-                                      Color.fromARGB(255, 95, 87, 86),
+                                      const Color.fromARGB(255, 95, 87, 86),
                                 ),
                               );
                             });

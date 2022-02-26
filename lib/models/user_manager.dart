@@ -15,8 +15,6 @@ class UserManager extends ChangeNotifier {
 
   UserApp userApp;
 
-  ///aqui
-
   bool _loading = false;
   bool get loading => _loading;
 
@@ -49,8 +47,7 @@ class UserManager extends ChangeNotifier {
           email: userApp.email, password: userApp.password);
 
       userApp.id = result.user.uid;
-
-      this.userApp = UserApp();
+      this.userApp = userApp;
 
       await userApp.saveData();
 
@@ -74,11 +71,11 @@ class UserManager extends ChangeNotifier {
 
   Future<void> _loadCurrentUser({User firebaseUser}) async {
     User currentUser = firebaseUser ?? auth.currentUser;
-
     if (currentUser != null) {
       final DocumentSnapshot docUser =
           await firestore.collection('users').doc(currentUser.uid).get();
       userApp = UserApp.fromDocument(docUser);
+
       notifyListeners();
     }
   }

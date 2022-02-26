@@ -3,7 +3,7 @@ import 'package:lojavirtual/common/custom_drawer/custom_drawer.dart';
 import 'package:lojavirtual/models/page_manager.dart';
 
 import 'package:provider/provider.dart';
-//import 'package:provider';
+
 
 class BaseScreen extends StatelessWidget {
   final PageController pagecontroller = PageController();
@@ -25,9 +25,20 @@ class BaseScreen extends StatelessWidget {
               backgroundColor: const Color.fromARGB(255, 9, 27, 39),
             ),
           ),
-          Container(color: Colors.red),
-          Container(color: Colors.green),
-          Container(color: Colors.yellow),
+           Scaffold(
+            drawer: const CustomDrawer(),
+            appBar: AppBar(
+              title: const Text('Home2'),
+              backgroundColor: const Color.fromARGB(255, 9, 27, 39),
+            ),
+          ),
+           Scaffold(
+            drawer: const CustomDrawer(),
+            appBar: AppBar(
+              title: const Text('Home3'),
+              backgroundColor: const Color.fromARGB(255, 9, 27, 39),
+            ),
+          ),
         ],
       ),
     );
