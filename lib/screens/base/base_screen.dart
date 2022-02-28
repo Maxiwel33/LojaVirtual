@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lojavirtual/common/custom_drawer/custom_drawer.dart';
 import 'package:lojavirtual/models/page_manager.dart';
+import 'package:lojavirtual/screens/products/products_screen.dart';
 
 import 'package:provider/provider.dart';
-
 
 class BaseScreen extends StatelessWidget {
   final PageController pagecontroller = PageController();
@@ -25,14 +25,15 @@ class BaseScreen extends StatelessWidget {
               backgroundColor: const Color.fromARGB(255, 9, 27, 39),
             ),
           ),
-           Scaffold(
+          const ProductsScreen(),
+          Scaffold(
             drawer: const CustomDrawer(),
             appBar: AppBar(
               title: const Text('Home2'),
               backgroundColor: const Color.fromARGB(255, 9, 27, 39),
             ),
           ),
-           Scaffold(
+          Scaffold(
             drawer: const CustomDrawer(),
             appBar: AppBar(
               title: const Text('Home3'),

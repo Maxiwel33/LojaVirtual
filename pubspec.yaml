@@ -39,7 +39,7 @@ dependencies:
   firebase_auth: ^3.3.7
   firebase_storage: ^10.2.7 
  
-  provider: ^6.0.2
+  provider: ^6.0.2  
   get: ^4.6.1
 
 

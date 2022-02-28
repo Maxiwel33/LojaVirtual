@@ -25,118 +25,135 @@ class SignUpScreen extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 16),
           child: Form(
             key: formKey,
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              shrinkWrap: true,
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(hintText: 'Nome Completo'),
-                  validator: (name) {
-                    if (name.isEmpty)
-                      // ignore: curly_braces_in_flow_control_structures
-                      return 'Campo obrigatório';
-                    else if (name.trim().split(' ').length <= 1) {
-                      return 'Preencha seu nome completo';
-                    }
-                    return null;
-                  },
-                  onSaved: (name) => userApp.name = name,
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(hintText: 'E-Mail'),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (email) {
-                    if (email.isEmpty) {
-                      return 'Campo obrigatorio';
-                    } else if (!emailValid(email)) {
-                      return 'E-mail inválido';
-                    }
-                    return null;
-                  },
-                  onSaved: (email) => userApp.email = email,
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(hintText: 'Senha'),
-                  obscureText: true,
-                  validator: (pass) {
-                    if (pass.isEmpty)
-                      // ignore: curly_braces_in_flow_control_structures
-                      return 'Campo Obrigatorio';
-                    // ignore: curly_braces_in_flow_control_structures
-                    else if (pass.length < 6) return 'Senha muito curta';
-                    return null;
-                  },
-                  onSaved: (pass) => userApp.password = pass,
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(hintText: 'Repita a Senha'),
-                  obscureText: true,
-                  validator: (pass) {
-                    if (pass.isEmpty) {
-                      return 'Campo Obrigatorio';
-                    } else if (pass.length < 6) {
-                      return 'Senha muito curta';
-                    }
-                    return null;
-                  },
-                  onSaved: (pass) => userApp.confirmPassword = pass,
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                SizedBox(
-                  height: 46,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (formKey.currentState.validate()) {
-                        formKey.currentState.save();
-
-                        if (userApp.password != userApp.confirmPassword) {
-                          // ignore: deprecated_member_use
-                          scaffoldKey.currentState.showSnackBar(
-                            const SnackBar(
-                              content:
-                                  Text('Senha nao coincidem, tente novamente!'),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                          return;
-                        }
-                        context.read<UserManager>().signUp(
-                            userApp: userApp,
-                            onSucess: () {
-                              Navigator.of(context).pop();
-                            },
-                            onFail: (e) {
-                              // ignore: deprecated_member_use
-                              scaffoldKey.currentState?.showSnackBar(
-                                SnackBar(
-                                  content: Text('Falha ao Cadasrtrar: $e'),
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 95, 87, 86),
-                                ),
-                              );
-                            });
+            child: Consumer<UserManager>(builder: (_, userManager, __) {
+              return ListView(
+                padding: const EdgeInsets.all(16),
+                shrinkWrap: true,
+                children: [
+                  TextFormField(
+                    decoration:
+                        const InputDecoration(hintText: 'Nome Completo'),
+                    enabled: !userManager.loading,
+                    validator: (name) {
+                      if (name.isEmpty)
+                        // ignore: curly_braces_in_flow_control_structures
+                        return 'Campo obrigatório';
+                      else if (name.trim().split(' ').length <= 1) {
+                        return 'Preencha seu nome completo';
                       }
+                      return null;
                     },
-                    child: context.read<UserManager>().loading
-                        ? const CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation(Colors.amber),
-                          )
-                        : const Text('Criar Conta'),
+                    onSaved: (name) => userApp.name = name,
                   ),
-                ),
-              ],
-            ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(hintText: 'E-Mail'),
+                    keyboardType: TextInputType.emailAddress,
+                    enabled: !userManager.loading,
+                    validator: (email) {
+                      if (email.isEmpty) {
+                        return 'Campo obrigatorio';
+                      } else if (!emailValid(email)) {
+                        return 'E-mail inválido';
+                      }
+                      return null;
+                    },
+                    onSaved: (email) => userApp.email = email,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(hintText: 'Senha'),
+                    obscureText: true,
+                    enabled: !userManager.loading,
+                    validator: (pass) {
+                      if (pass.isEmpty)
+                        // ignore: curly_braces_in_flow_control_structures
+                        return 'Campo Obrigatorio';
+                      // ignore: curly_braces_in_flow_control_structures
+                      else if (pass.length < 6) return 'Senha muito curta';
+                      return null;
+                    },
+                    onSaved: (pass) => userApp.password = pass,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  TextFormField(
+                    decoration:
+                        const InputDecoration(hintText: 'Repita a Senha'),
+                    obscureText: true,
+                    enabled: !userManager.loading,
+                    validator: (pass) {
+                      if (pass.isEmpty) {
+                        return 'Campo Obrigatorio';
+                      } else if (pass.length < 6) {
+                        return 'Senha muito curta';
+                      }
+                      return null;
+                    },
+                    onSaved: (pass) => userApp.confirmPassword = pass,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  SizedBox(
+                    height: 46,
+                    child: ElevatedButton(
+                      onPressed: userManager.loading
+                          ? null
+                          : () {
+                              if (formKey.currentState.validate()) {
+                                formKey.currentState.save();
+
+                                if (userApp.password !=
+                                    userApp.confirmPassword) {
+                                  // ignore: deprecated_member_use
+                                  scaffoldKey.currentState.showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Senha nao coincidem, tente novamente!'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                  return;
+                                }
+                                userManager.signUp(
+                                    userApp: userApp,
+                                    onSucess: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    onFail: (e) {
+                                      // ignore: deprecated_member_use
+                                      scaffoldKey.currentState?.showSnackBar(
+                                        SnackBar(
+                                          content:
+                                              Text('Falha ao Cadasrtrar: $e'),
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 95, 87, 86),
+                                        ),
+                                      );
+                                    });
+                              }
+                            },
+                      child: userManager.loading
+                          ? const CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation(Colors.white),
+                            )
+                          : const Text(
+                              'Criar Conta',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                    ),
+                  ),
+                ],
+              );
+            }),
           ),
         ),
       ),
