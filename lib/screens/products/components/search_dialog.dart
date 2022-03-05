@@ -1,9 +1,13 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:lojavirtual/models/products_manager.dart';
 import 'package:provider/provider.dart';
 
 class SearchDialog extends StatelessWidget {
-  const SearchDialog({Key key}) : super(key: key);
+  const SearchDialog(this.initialText);
+
+  final String initialText;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +21,7 @@ class SearchDialog extends StatelessWidget {
             right: 4,
             child: Card(
               child: TextFormField(
+                initialValue: initialText,
                 textInputAction: TextInputAction.search,
                 autofocus: true,
                 decoration: InputDecoration(
@@ -32,6 +37,7 @@ class SearchDialog extends StatelessWidget {
                 ),
                 onFieldSubmitted: (search) {
                   if (search != null)
+                    // ignore: curly_braces_in_flow_control_structures
                     context.read<ProductManager>().search = search;
                   Navigator.of(context).pop();
                 },
